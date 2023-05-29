@@ -1,15 +1,18 @@
 Feature: Login to Orange HRM
 
-  Background: User is in the Login Page
-    Given User is in the Login Page
+  Background: Open a browser and user is on Login Page
+  Given Open a browser
+  And Navigates to Login Page
+ 
+  Scenario: User login with valid credential
+    When User entered admin username as Admin and password as admin123
     And User clicked on Login Button
-
-  Scenario: Admin login with valid credential
-    When User entered admin username as "Admin" and password as "admin123"
     Then Login is successful
-
-  Scenario Outline: Login to the Application Successfully
+ 
+ 
+  Scenario Outline: User login with invalid credential
     When User entered username as <username> and password as <password>
+    And User clicked on Login button
     Then Login failed
 
     Examples: 
@@ -17,3 +20,4 @@ Feature: Login to Orange HRM
       | Admin    | admin125 |
       | Shiv     | admin123 |
       | cnlle09  | lkksiek  |
+
