@@ -12,74 +12,62 @@ import config.Settings;
 
 public class DatabaseUtil {
 
-	 public static Connection Open(String connectionString)
-	    {
-	        try {
-	            Class.forName(Settings.DriverType).newInstance();
-	            return DriverManager.getConnection(connectionString);
-	        }
-	        catch (Exception e)
-	        {
+	public static Connection Open(String connectionUrl, String connectionUsername, String connectionPassword) {
+		try {
+			Class.forName(Settings.DriverType).newInstance();
+			return DriverManager.getConnection(connectionUrl, connectionUsername, connectionPassword);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	        }
-	        return null;
-	    }
+	public static void Close() {
+		//
+	}
 
-	    public static  void Close()
-	    {
-	        //
-	    }
+	public static void ExecuteQuery(String query, Connection connection) {
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	    public static void ExecuteQuery(String query, Connection connection)
-	    {
-	        Statement statement = null;
-	        try
-	        {
-	            statement = connection.createStatement();
-	            ResultSet resultSet = statement.executeQuery(query);
-	        }
-	        catch (Exception e)
-	        {
+	public static void ExecuteStoredProc(String procedureName, Hashtable parameters, Connection connection) {
+		try {
 
-	        }
-	    }
+			int paramterLength = parameters.size();
+			String paraAppender = null;
+			StringBuilder builder = new StringBuilder();
+			// Build the paramters list to be passed in the stored proc
+			for (int i = 0; i < parameters.size(); i++) {
+				builder.append("?,");
+			}
 
-	    public static void ExecuteStoredProc(String procedureName, Hashtable parameters, Connection connection)
-	    {
-	        try {
+			paraAppender = builder.toString();
+			paraAppender = paraAppender.substring(0, paraAppender.length() - 1);
 
-	            int paramterLength = parameters.size();
-	            String paraAppender = null;
-	            StringBuilder builder = new StringBuilder();
-	            // Build the paramters list to be passed in the stored proc
-	            for (int i = 0; i < parameters.size(); i++) {
-	                builder.append("?,");
-	            }
+			CallableStatement stmt = connection.prepareCall("{Call " + procedureName + "(" + paraAppender + ")}");
 
-	            paraAppender = builder.toString();
-	            paraAppender = paraAppender.substring(0,
-	                    paraAppender.length() - 1);
+			// Creates Enumeration for getting the keys for the parameters
+			Enumeration params = parameters.keys();
 
-	            CallableStatement stmt = connection.prepareCall("{Call "
-	                    + procedureName + "(" + paraAppender + ")}");
+			// Iterate in all the Elements till there is no keys
+			while (params.hasMoreElements()) {
+				// Get the Key from the parameters
+				String paramsName = (String) params.nextElement();
+				// Set Paramters name and Value
+				stmt.setString(paramsName, parameters.get(paramsName).toString());
+			}
 
-	            // Creates Enumeration for getting the keys for the parameters
-	            Enumeration params = parameters.keys();
-
-	            // Iterate in all the Elements till there is no keys
-	            while (params.hasMoreElements()) {
-	                // Get the Key from the parameters
-	                String paramsName = (String) params.nextElement();
-	                // Set Paramters name and Value
-	                stmt.setString(paramsName, parameters.get(paramsName)
-	                        .toString());
-	            }
-
-	            // Execute Query
-	            stmt.execute();
-	        } catch (Exception e) {
-	            System.out.println(e.getMessage());
-	        }
-	    }
+			// Execute Query
+			stmt.execute();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 }
