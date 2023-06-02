@@ -1,8 +1,7 @@
 Feature: Login to Orange HRM
 
   Background: Open a browser and user is on Login Page
-    Given Open a browser
-    And Navigates to Login Page
+    And Ensure application is opened
 
   Scenario: User login with valid credential
     When User entered admin username as "Admin" and password as "admin123"
@@ -19,3 +18,4 @@ Feature: Login to Orange HRM
       | Admin    | admin125 |
       | Shiv     | admin123 |
       | cnlle09  | lkksiek  |
+      |          |          |
