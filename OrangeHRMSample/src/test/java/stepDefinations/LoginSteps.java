@@ -22,17 +22,15 @@ public class LoginSteps extends Base {
 	@When("^User entered admin username as \"([^\"]*)\" and password as \"([^\"]*)\"$")
 	public void user_entered_admin_username_as_admin_and_password_as_admin123(String validUsername,
 			String validPassword) throws Throwable {
-		LoginPage loginPage = new LoginPage();
-		loginPage.enterUsername(validUsername);
-		loginPage.enterPassword(validPassword);
+		CurrentPage.As(LoginPage.class).enterUsername(validUsername);
+		CurrentPage.As(LoginPage.class).enterPassword(validPassword);
 		Settings.Logs.Write("Valid credentials entered");
 		Thread.sleep(2000);
 	}
 
 	@And("^User clicked on Login Button$")
 	public void user_clicked_on_login_button() throws Throwable {
-		LoginPage loginPage = new LoginPage();
-		loginPage.clickOnLoginButton();
+		CurrentPage.As(LoginPage.class).clickOnLoginButton();
 		Settings.Logs.Write("Click on login button");
 	}
 
@@ -47,16 +45,14 @@ public class LoginSteps extends Base {
 
 	@When("^User entered username as (.*) and password as (.*)$")
 	public void user_entered_username_as_and_password_as(String username, String password) throws Throwable {
-		LoginPage loginPage = new LoginPage();
-		loginPage.enterUsername(username);
-		loginPage.enterPassword(password);
+		CurrentPage.As(LoginPage.class).enterUsername(username);
+		CurrentPage.As(LoginPage.class).enterPassword(password);
 		Settings.Logs.Write("Invalid credentials entered");
 	}
 
 	@And("^User clicked on Login button$")
 	public void user_clicked_on_login_button1() throws Throwable {
-		LoginPage loginPage = new LoginPage();
-		loginPage.clickOnLoginButton();
+		CurrentPage.As(LoginPage.class).clickOnLoginButton();
 		Settings.Logs.Write("Click on login button");
 	}
 
