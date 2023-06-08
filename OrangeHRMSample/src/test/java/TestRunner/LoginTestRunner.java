@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 		plugin = {"pretty", "html:target/Report.HTML", "json:target/Report.Json"},
-		features = "src/test/resources/features/login.feature",
+		features = "src/test/resources/features",
 		glue ={"stepDefinations","hooks"},
 		monochrome = true
 		)
@@ -16,3 +16,4 @@ import io.cucumber.junit.CucumberOptions;
 public class LoginTestRunner {
 
 }
+	
